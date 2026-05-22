@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Ujian Online - Komputer dan Masyarakat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+        }
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+
+    <header class="bg-white dark:bg-slate-800 shadow-sm border-b border-slate-200 dark:border-slate-700 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-primary-600 text-white p-2 rounded-lg shadow-md">
+                    <i class="fa-solid fa-graduation-cap text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight text-slate-900 dark:text-white leading-none">EduTest</h1>
+                    <span class="text-xs text-slate-500 dark:text-slate-400">Portal Ujian Mandiri</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button id="themeToggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all focus:outline-none" aria-label="Toggle Theme">
+                    <i class="fa-solid fa-moon dark:hidden"></i>
+                    <i class="fa-solid fa-sun hidden dark:inline"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center p-4">
+        <div id="loginSection" class="w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-8 transition-all">
+            <div class="text-center mb-8">
+                <div class="inline-block bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 p-4 rounded-full mb-4">
+                    <i class="fa-solid fa-file-signature text-3xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Ujian Online</h2>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Mata Kuliah: Komputer dan Masyarakat</p>
+                <div class="mt-3 inline-flex items-center space-x-2 bg-slate-100 dark:bg-slate-700/50 px-3 py-1.5 rounded-full text-xs text-slate-600 dark:text-slate-300">
+                    <i class="fa-solid fa-clock text-primary-500"></i>
+                    <span>Durasi: 75 Menit</span>
+                    <span class="mx-1">•</span>
+                    <i class="fa-solid fa-list-check text-primary-500"></i>
+                    <span>50 Soal PG</span>
+                </div>
+            </div>
+
+            <form id="loginForm" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1" for="inputNama">Nama Lengkap</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <input type="text" id="inputNama" required class="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all outline-none text-sm placeholder-slate-400 text-slate-900 dark:text-white" placeholder="Masukkan nama Anda">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1" for="inputNim">NIM (Nomor Induk Mahasiswa)</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                            <i class="fa-solid fa-id-card"></i>
+                        </span>
+                        <input type="text" id="inputNim" required class="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all outline-none text-sm placeholder-slate-400 text-slate-900 dark:text-white" placeholder="Contoh: 2110114001">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1" for="inputKelas">Kelas</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                            <i class="fa-solid fa-users"></i>
+                        </span>
+                        <input type="text" id="inputKelas" required class="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all outline-none text-sm placeholder-slate-400 text-slate-900 dark:text-white" placeholder="Contoh: 04TPLP001">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-lg hover:shadow-primary-500/20 active:scale-[0.98] glow-button flex justify-center items-center space-x-2">
+                    <span>Mulai Ujian</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+
+        <div id="examSection" class="hidden w-full max-w-7xl mx-auto flex flex-col lg:flex-row gap-6">
+            <!-- Left Side: Main Exam Panel -->
+            <div class="flex-grow lg:w-3/4 space-y-6">
+                <!-- Top Info Bar -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-md border border-slate-200 dark:border-slate-700 p-5 flex flex-wrap justify-between items-center gap-4 transition-all">
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-primary-50 dark:bg-primary-950/40 p-2.5 rounded-xl text-primary-600 dark:text-primary-400">
+                            <i class="fa-solid fa-user-graduate text-xl"></i>
+                        </div>
+                        <div>
+                            <p id="studentInfo" class="text-sm font-bold text-slate-900 dark:text-white leading-snug">Nama Siswa</p>
+                            <p id="studentSub" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">NIM / Kelas</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-4">
+                        <!-- Progress status -->
+                        <div class="text-right">
+                            <span class="text-xs text-slate-400 dark:text-slate-500 block uppercase font-bold tracking-wider">Kemajuan</span>
+                            <span id="examProgressLabel" class="text-sm font-semibold text-slate-700 dark:text-slate-300">0 / 50 Terjawab</span>
+                        </div>
+                        
+                        <!-- Timer -->
+                        <div class="bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 px-4 py-2 rounded-xl flex items-center space-x-2 text-rose-600 dark:text-rose-400">
+                            <i class="fa-solid fa-clock-rotate-left animate-pulse-slow"></i>
+                            <span id="timerText" class="font-mono text-base font-bold">75:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Question Display Area -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-md border border-slate-200 dark:border-slate-700 p-6 sm:p-8 transition-all min-h-[400px] flex flex-col justify-between">
+                    <div>
+                        <!-- Header with Question Number -->
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="bg-primary-100 dark:bg-primary-900/50 text-primary-800 dark:text-primary-200 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider" id="questionBadge">Soal 1 dari 50</span>
+                            <button id="btnMarkReview" class="flex items-center space-x-1.5 text-xs text-amber-600 dark:text-amber-400 font-semibold border border-amber-300 dark:border-amber-800/80 bg-amber-50 dark:bg-amber-950/20 px-3.5 py-1.5 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors">
+                                <i class="fa-regular fa-bookmark" id="reviewIcon"></i>
+                                <span id="reviewText">Tandai Ragu-Ragu</span>
+                            </button>
+                        </div>
+
+                        <!-- Question Content -->
+                        <div id="questionContainer" class="mb-8">
+                            <p id="questionText" class="text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-100 leading-relaxed">Loading Pertanyaan...</p>
+                        </div>
+
+                        <!-- Options List -->
+                        <div id="optionsContainer" class="space-y-3">
+                            <!-- Options will be generated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Navigation Action Buttons -->
+                    <div class="flex justify-between items-center border-t border-slate-200 dark:border-slate-700 pt-6 mt-8">
+                        <button id="btnPrev" class="flex items-center space-x-2 px-5 py-2.5 border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all font-semibold text-sm active:scale-95 disabled:opacity-50">
+                            <i class="fa-solid fa-chevron-left text-xs"></i>
+                            <span>Sebelumnya</span>
+                        </button>
+                        
+                        <div class="flex items-center space-x-3">
+                            <button id="btnSubmitQuick" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl transition-all shadow-md font-semibold text-sm">
+                                <i class="fa-solid fa-check-double mr-1.5"></i> Selesai & Kirim
+                            </button>
+                            <button id="btnNext" class="flex items-center space-x-2 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl transition-all shadow-md font-semibold text-sm active:scale-95">
+                                <span>Selanjutnya</span>
+                                <i class="fa-solid fa-chevron-right text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full lg:w-1/4">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-md border border-slate-200 dark:border-slate-700 p-5 sticky top-6 transition-all flex flex-col h-[550px]">
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-3">
+                        <span>Peta Soal Ujian</span>
+                        <span class="text-xs bg-slate-100 dark:bg-slate-700 px-2.5 py-1 rounded-full text-slate-500">50 Butir</span>
+                    </h3>
+                    
+                    <!-- Question Grid Sheet -->
+                    <div class="grid grid-cols-5 gap-2 overflow-y-auto custom-scrollbar flex-grow pr-1 mb-5" id="navigatorGrid">
+                        <!-- 50 Buttons will be generated dynamically -->
+                    </div>
+
+                    <!-- Legend Definitions -->
+                    <div class="border-t border-slate-100 dark:border-slate-700 pt-4 space-y-2 text-xs">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="flex items-center space-x-2 text-slate-600 dark:text-slate-400">
+                                <span class="w-3.5 h-3.5 rounded bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 block"></span>
+                                <span>Belum Dijawab</span>
+                            </div>
+                            <div class="flex items-center space-x-2 text-slate-600 dark:text-slate-400">
+                                <span class="w-3.5 h-3.5 rounded bg-primary-600 block"></span>
+                                <span>Sudah Dijawab</span>
+                            </div>
+                            <div class="flex items-center space-x-2 text-slate-600 dark:text-slate-400 col-span-2">
+                                <span class="w-3.5 h-3.5 rounded bg-amber-500 block"></span>
+                                <span>Ditandai Ragu-Ragu</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Exam Anchor -->
+                        <div class="pt-3">
+                            <button id="btnSubmit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-md flex items-center justify-center space-x-2 glow-button">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>Kumpulkan Ujian</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="resultSection" class="hidden w-full max-w-4xl mx-auto space-y-6">
+            <!-- Final Certificate Card -->
+            <div id="printArea" class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-8 sm:p-10 transition-all text-center relative overflow-hidden">
+                <!-- Decorative background elements -->
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-primary-500/10 rounded-full blur-2xl"></div>
+                <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-2xl"></div>
+
+                <div class="relative z-10">
+                    <div class="inline-block bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 p-4 rounded-full mb-6">
+                        <i class="fa-solid fa-circle-check text-4xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">Ujian Selesai!</h2>
+                    <p class="text-slate-500 dark:text-slate-400 mt-2">Berikut adalah lembar ringkasan hasil ujian Anda</p>
+
+                    <!-- User and Score Information Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto my-8 bg-slate-50 dark:bg-slate-700/30 rounded-2xl p-6 border border-slate-200/60 dark:border-slate-700/60 text-left">
+                        <div class="space-y-2 border-r border-slate-200 dark:border-slate-700 pr-0 md:pr-6">
+                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Biodata Mahasiswa</h4>
+                            <div>
+                                <span class="text-xs text-slate-400 dark:text-slate-500 block">Nama Lengkap</span>
+                                <span id="resNama" class="text-sm font-bold text-slate-800 dark:text-white">-</span>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 dark:text-slate-500 block">NIM (Nomor Induk)</span>
+                                <span id="resNim" class="text-sm font-semibold text-slate-800 dark:text-white">-</span>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 dark:text-slate-500 block">Kelas</span>
+                                <span id="resKelas" class="text-sm font-semibold text-slate-800 dark:text-white">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Score Gauge Widget -->
+                        <div class="flex flex-col items-center justify-center pl-0 md:pl-6 pt-6 md:pt-0">
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block">Skor Akhir</span>
+                            <div class="relative flex items-center justify-center w-28 h-28 rounded-full border-4 border-slate-200 dark:border-slate-700">
+                                <div class="absolute inset-2 bg-white dark:bg-slate-800 rounded-full flex flex-col justify-center items-center shadow-inner">
+                                    <span id="resScoreValue" class="text-3xl font-extrabold text-primary-600 dark:text-primary-400">0</span>
+                                    <span class="text-[10px] text-slate-400 dark:text-slate-500 uppercase font-bold">Skor (0-100)</span>
+                                </div>
+                            </div>
+                            <span id="resStatusBadge" class="mt-4 px-4 py-1 text-xs font-bold rounded-full bg-slate-200 text-slate-700">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Statistics Bar Grid -->
+                    <div class="grid grid-cols-3 gap-4 max-w-lg mx-auto mb-8">
+                        <div class="bg-slate-100 dark:bg-slate-700/40 p-4 rounded-xl border border-slate-200/50 dark:border-slate-700/50">
+                            <span class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Benar</span>
+                            <span id="resCorrect" class="text-xl font-bold text-emerald-600 dark:text-emerald-400">0</span>
+                        </div>
+                        <div class="bg-slate-100 dark:bg-slate-700/40 p-4 rounded-xl border border-slate-200/50 dark:border-slate-700/50">
+                            <span class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Salah</span>
+                            <span id="resIncorrect" class="text-xl font-bold text-rose-600 dark:text-rose-400">0</span>
+                        </div>
+                        <div class="bg-slate-100 dark:bg-slate-700/40 p-4 rounded-xl border border-slate-200/50 dark:border-slate-700/50">
+                            <span class="text-xs text-slate-500 dark:text-slate-400 block mb-1">Kosong</span>
+                            <span id="resUnanswered" class="text-xl font-bold text-amber-600 dark:text-amber-400">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <button id="btnPrint" class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2.5 px-6 rounded-xl transition-all shadow-md flex items-center space-x-2">
+                            <i class="fa-solid fa-print"></i>
+                            <span>Cetak Hasil</span>
+                        </button>
+                        <button id="btnShowReview" class="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold py-2.5 px-6 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-600 transition-all border border-slate-200 dark:border-slate-600 flex items-center space-x-2">
+                            <i class="fa-solid fa-list-check"></i>
+                            <span>Tinjau Jawaban</span>
+                        </button>
+                        <button id="btnRestart" class="bg-rose-600 hover:bg-rose-700 text-white font-semibold py-2.5 px-6 rounded-xl transition-all shadow-md flex items-center space-x-2">
+                            <i class="fa-solid fa-arrows-rotate"></i>
+                            <span>Ulangi Ujian</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="detailedReviewContainer" class="hidden bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 sm:p-8 transition-all space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-4 mb-6">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-magnifying-glass-chart text-primary-500"></i>
+                        <span>Lembar Jawaban Detail</span>
+                    </h3>
+                    <span class="text-xs bg-primary-100 dark:bg-primary-950/60 text-primary-800 dark:text-primary-300 px-3 py-1.5 rounded-full font-bold">50 Soal Diperiksa</span>
+                </div>
+                
+                <div id="detailedReviewList" class="space-y-4">
+                    <!-- Dynamic review list items loaded here -->
